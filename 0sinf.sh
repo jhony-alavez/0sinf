@@ -19,7 +19,7 @@ read -p "Enter in the target domain (i.e. [www.]example.com): " domain
 ### Check for dependencies
 sleep 1
 #### subfinder ####
-if ! command -v <the_command> &> /dev/null
+if ! command -v go &> /dev/null
 then
     echo -e "[+] go installation required. Proceeding...\n"
     sleep 1
