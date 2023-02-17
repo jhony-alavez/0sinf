@@ -13,7 +13,25 @@
 # update domain argument and menu to python3
 # implement simply email within python3 - as the last section
 
-read -p "Enter in the target domain (i.e. [www.]example.com): " domain
+####
+
+Variables
+
+####
+RED="\e[31m"
+GREEN="\e[32m"
+GREY="\e[37m"
+END="\e[0m"
+
+
+output_subfinder="subfinder-$domain-output.txt"
+output_fierce="fierce-$domain-output.txt"
+output_simplymail="simplymail-$domain-output.txt"
+output_hibp="hibp-$domain-output.txt"
+
+###### prompt #####
+
+read -p "${RED}Enter in the target domain (i.e. [www.]example.com): ${END}" domain
 
 
 ### Check for dependencies
@@ -21,15 +39,17 @@ sleep 1
 #### subfinder ####
 if ! command -v go &> /dev/null
 then
-    echo -e "[+] go installation required. Proceeding...\n"
+    echo -e "${RED}[+] go installation required. Proceeding...\n${GREY}"
     sleep 1
     sudo apt-get -o DPkg::Lock::Timeout=3 update 
     sudo apt-get -o DPkg::Lock::Timeout=3 -y install golang
     sleep 2
     export GOPATH=$HOME/go
     export PATH=$PATH:$GOPATH/bin
+    sleep 2
+    echo -e "${RED}[!] Done.${END}"
 else
-    echo -e "[+] go already installed."
+    echo -e "${GREEN}[+] go already installed.${END}"
 fi
 sleep 2
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
@@ -95,16 +115,7 @@ SKIPPING
 
 
 
-####
-
-Variables
-
-####
-
-output_subfinder="subfinder-$domain-output.txt"
-output_fierce="fierce-$domain-output.txt"
-output_simplymail="simplymail-$domain-output.txt"
-output_hibp="hibp-$domain-output.txt"
+#### Main functions #####
 
 <<DESCRIPTION
 This begins the functionality of the script.
