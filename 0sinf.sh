@@ -25,7 +25,7 @@ then
     sleep 1
     sudo apt-get -q update 
     sudo apt-get -q -y install golang > /dev/null
-    export GOROOT=/usr/local/go
+    sleep 2
     export GOPATH=$HOME/go
     export PATH=$PATH:$GOPATH/bin
 else
