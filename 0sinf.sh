@@ -19,15 +19,21 @@ read -p "Enter in the target domain (i.e. [www.]example.com): " domain
 ### Check for dependencies
 
 #### subfinder ####
-sudo apt -q -y install subfinder > /dev/null
+sudo apt-get -q -y install golang > /dev/null
 if [ $? -ne 0 ]; then
-    echo "Error: subfinder installation failed."
+    echo "Error: golang installation failed."
 else
-    echo "[+] subfinder installed successfully."
+    echo "[+] golang installed successfully."
 fi
 
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+source ~/.zshrc
+
+go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+
 #### fierce ####
-sudo apt -q -y install fierce > /dev/null
+sudo apt-get -q -y install fierce > /dev/null
 if [ $? -ne 0 ]; then
     echo "Error: fierce installation failed."
 else
@@ -35,7 +41,7 @@ else
 fi
 
 #### whois ####
-sudo apt -q -y install whois > /dev/null
+sudo apt-get -q -y install whois > /dev/null
 if [ $? -ne 0 ]; then
     echo "Error: whois installation failed."
 else
