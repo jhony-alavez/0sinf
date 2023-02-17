@@ -17,7 +17,7 @@ read -p "Enter in the target domain (i.e. [www.]example.com): " domain
 
 
 ### Check for dependencies
-
+sleep 1
 #### subfinder ####
 sudo apt-get -q -y install golang > /dev/null
 if [ $? -ne 0 ]; then
@@ -25,6 +25,7 @@ if [ $? -ne 0 ]; then
 else
     echo "[+] golang installed successfully."
 fi
+sleep 2
 
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -39,7 +40,7 @@ if [ $? -ne 0 ]; then
 else
     echo "[+] fierce installed successfully."
 fi
-
+sleep 2
 #### whois ####
 sudo apt-get -q -y install whois > /dev/null
 if [ $? -ne 0 ]; then
@@ -47,7 +48,7 @@ if [ $? -ne 0 ]; then
 else
     echo "[+] whois installed successfully."
 fi
-
+sleep 2
 <<SKIPPING
 #### simplymail ####
 # docker
@@ -116,33 +117,35 @@ This will go in the following order:
 DESCRIPTION
 
 ## subfinder
-if [-e "$output_subfinder"]; then
-    i=1
-    while [-e "$output_subfinder-$i.bkp"]; do
-        let i++
-    done
-    output_subfinder="$output_subfinder-$i"
-fi
+#if [-e "$output_subfinder"]; then
+#    i=1
+#    while [-e "$output_subfinder-$i.bkp"]; do
+#        let i++
+#    done
+#    output_subfinder="$output_subfinder-$i"
+#fi
 
 subfinder -v -d $domain -o $output_subfinder
+sleep 2
 sort -u $output_subfinder > tmp-subfinder && mv tmp-subfinder $output_subfinder
 
 
 ## fierce
 
 fierce --domain $domain > $output_fierce
+sleep 2
 grep $domain $output_fierce > tmp-fierce && mv tmp-fierce $output_fierce
 
 ## domain parsing
-
-echo -e "[!] Parsing domain data..."
+sleep 1
+echo -e "\n[!] Parsing domain data..."
 
 ## parsing Found domains
 grep "Found" test-fierce-output.txt | awk '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-1
 
 ## parsing other domains returned (not by Found)
 grep -v "Found" test-fierce-output.txt | tr -d "{}'," | awk -F: '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-2
-
+sleep 1
 ## compiling all target subdomains
 ## compiling all target subdomains
 cat $output_sublist3r tmp-fierce-domains-1 tmp-fierce-domains-2 > tmp-all-domains.txt
@@ -158,6 +161,9 @@ rm tmp*
 
 
 ## nslookup
+echo -e "\n[!] Nslookup"
+
+
 # NOTE: for now it only provides a file of all resolved IP address and only outputs IP addresses
 # you will need to manually cross references IP addresses to the subdomain.
 # However it's all alphabetically sorted before it gets here. 
@@ -186,9 +192,9 @@ if [ -n "$ip" ]; then
     echo "$ip,$subdomain," >> tmp-csv
 fi
 done
-
+sleep 2
 awk '{if(substr($0,length($0)) != ",") gsub(/$/, ",,"); print}' tmp-csv > cleanup-csv
-
+sleep 2
 #### Sorting via IPv4 addreses must be done later -> as this affects the grouping of IPv4 addresses
 #### related to the same subdomains.
 ## storing as csv for deliverable and later ingest
@@ -197,6 +203,9 @@ awk '{if(substr($0,length($0)) != ",") gsub(/$/, ",,"); print}' tmp-csv > cleanu
 
 
 ## whois
+echo -e "\n[!] Whois"
+sleep 1
+
 awk -F ',' 'BEGIN {OFS = FS} NR == 1 {print $0; next} {
     cmd = "whois " $1 " | awk -F\":\" \"/Registrant|Organization/ {print \\$2}\" | tr -d \",\""
     cmd | getline output
