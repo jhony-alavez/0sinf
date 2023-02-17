@@ -31,7 +31,7 @@ output_hibp="hibp-$domain-output.txt"
 
 ###### prompt #####
 
-read -p $'${RED}Enter in the target domain (i.e. [www.]example.com): ${END}' domain
+read -p $'\e[31mEnter in the target domain (i.e. [www.]example.com): \e[0m' domain
 
 
 ### Check for dependencies
