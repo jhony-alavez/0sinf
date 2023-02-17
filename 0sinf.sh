@@ -171,15 +171,15 @@ sleep 2
 subfinder -v -d $domain -o $output_subfinder
 sleep 2
 sort -u $output_subfinder > tmp-subfinder && mv tmp-subfinder $output_subfinder
-echo -e "${GREEN} $output_subfinder ${RED}file created.${END}"
+echo -e "${RED}[*]${GREEN} $output_subfinder ${RED}file created.${END}"
 sleep 3
 ## fierce
-echo -e "${RED} Fiercely 0 in on subdomains...${END}"
+echo -e "\n${RED} Fiercely 0 in on subdomains...${END}"
 sleep 2
 fierce --domain $domain > $output_fierce
 sleep 2
 grep $domain $output_fierce > tmp-fierce && mv tmp-fierce $output_fierce
-echo -e "${GREEN} $output_fierce ${RED}file created. ${END}"
+echo -e "${RED}[*]${GREEN} $output_fierce ${RED}file created. ${END}"
 sleep 3
 ## domain parsing
 echo -e "\n${RED}[!] Parsing subdomain data...${END}"
@@ -193,7 +193,7 @@ sleep 1
 echo -e "${RED}[!] Done.${END}"
 sleep 2
 
-echo -e "${RED}[!] 0 in on all subdomains.${END}"
+echo -e "\n${RED}[!] 0 in on all subdomains.${END}"
 ## compiling all target subdomains
 cat $output_sublist3r tmp-fierce-domains-1 tmp-fierce-domains-2 > tmp-all-domains.txt
 
@@ -202,7 +202,7 @@ sed -E "s/"$'\E'"\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g" tmp-all-domains.txt |
 
 ## sort unique
 sort -u tmp-all-domains-2.txt > all-domains.txt
-echo -e "${GREEN} all-domains.txt ${RED}file created.${END}" 
+echo -e "${RED}[*]${GREEN} all-domains.txt ${RED}file created.${END}" 
 ## clean up tmps 
 rm tmp*
 echo -e "${RED}[!] Done."
@@ -252,7 +252,7 @@ sleep 2
 
 
 ## whois
-echo -e "${RED}[!] 0 in on who the domain belongs to...${END}"
+echo -e "\n${RED}[!] 0 in on who the domain belongs to...${END}"
 sleep 2
 awk -F ',' 'BEGIN {OFS = FS} NR == 1 {print $0; next} {
     cmd = "whois " $1 " | awk -F\":\" \"/Registrant|Organization/ {print \\$2}\" | tr -d \",\""
@@ -280,4 +280,4 @@ cp tmp-whois.csv domain-$domain.csv
 rm tmp-*
 
 
-echo -e "[!] Done.\n"
+echo -e "${RED}[!] Done.\n${END}"
