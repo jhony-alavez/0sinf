@@ -23,8 +23,8 @@ if ! command -v go &> /dev/null
 then
     echo -e "[+] go installation required. Proceeding...\n"
     sleep 1
-    sudo apt-get -q update 
-    sudo apt-get -q -y install golang > /dev/null
+    sudo apt-get update 
+    sudo apt-get -y install golang
     sleep 2
     export GOPATH=$HOME/go
     export PATH=$PATH:$GOPATH/bin
