@@ -15,7 +15,7 @@
 
 ####
 
-Variables
+# Variables
 
 ####
 RED="\e[31m"
@@ -52,27 +52,48 @@ else
     echo -e "${GREEN}[+] go already installed.${END}"
 fi
 sleep 2
-go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-if [ $? -ne 0 ]; then
-    echo "Error: subfinder installation failed."
+if ! command -v subfinder &> /dev/null
+then 
+    echo -e "${RED}[+] subfinder installation required. Proceeding...\n${GREY}"
+    sleep 1
+    go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+    sleep 2
+    if [ $? -ne 0 ]; then
+        echo "${RED}[!] Error: subfinder installation failed.${END}"
+    else
+        echo -e "${RED}[!] Done.${END}"
+    fi
 else
-    echo "[+] subfinder installed successfully."
+    echo -e "${GREEN}[!] subfinder already installed!${END}"
 fi
 sleep 2
 #### fierce ####
-sudo apt-get -o DPkg::Lock::Timeout=3 -y install fierce
-if [ $? -ne 0 ]; then
-    echo "Error: fierce installation failed."
+if ! command -v fierce &> /dev/null
+then
+    echo -e "${RED}[+] fierce installation required. Proceeding...\n${GREY}"
+    sleep 1
+    sudo apt-get -o DPkg::Lock::Timeout=3 -y install fierce
+    if [ $? -ne 0 ]; then
+        echo "${RED}[!] Error: fierce installation failed.${END}"
+    else
+        echo "${RED}[!] Done.${END}"
 else
-    echo "[+] fierce installed successfully."
+    echo -e "${GREEN}[!] fierce already installed!${END}"
 fi
 sleep 2
 #### whois ####
-sudo apt-get -o DPkg::Lock::Timeout=3 -y install whois
-if [ $? -ne 0 ]; then
-    echo "Error: whois installation failed."
+
+if ! command -v whois &> /dev/null
+then
+    echo -e "${RED}[+] whois installation required. Proceeding...\n${GREY}"
+    sleep 1
+    sudo apt-get -o DPkg::Lock::Timeout=3 -y install whois
+    if [ $? -ne 0 ]; then
+        echo "${RED}[!] Error: whois installation failed.${END}"
+    else
+        echo "${RED}[!] Done.${END}"
 else
-    echo "[+] whois installed successfully."
+    echo -e "${GREEN}[!] whois already installed!${END}"
 fi
 sleep 2
 <<SKIPPING
