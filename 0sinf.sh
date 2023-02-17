@@ -49,7 +49,7 @@ then
     sleep 2
     echo -e "${RED}[!] Done.${END}"
 else
-    echo -e "${GREEN}[+] go already installed.${END}"
+    echo -e "${GREEN}[+] go already installed!${END}"
 fi
 sleep 2
 if ! command -v subfinder &> /dev/null
@@ -77,6 +77,7 @@ then
         echo "${RED}[!] Error: fierce installation failed.${END}"
     else
         echo "${RED}[!] Done.${END}"
+    fi
 else
     echo -e "${GREEN}[!] fierce already installed!${END}"
 fi
@@ -92,6 +93,7 @@ then
         echo "${RED}[!] Error: whois installation failed.${END}"
     else
         echo "${RED}[!] Done.${END}"
+    fi
 else
     echo -e "${GREEN}[!] whois already installed!${END}"
 fi
