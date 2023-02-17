@@ -49,7 +49,7 @@ then
     sleep 2
     echo -e "${RED}[!] Done.${END}"
 else
-    echo -e "${GREEN}[+] go already installed!${END}"
+    echo -e "${GREEN}[!] go already installed!${END}"
     export GOPATH=$HOME/go
     export PATH=$PATH:$GOPATH/bin
 fi
@@ -166,29 +166,34 @@ DESCRIPTION
 #    done
 #    output_subfinder="$output_subfinder-$i"
 #fi
-
+echo -e "${RED}0 in on subdomains... ${END}"
+sleep 2
 subfinder -v -d $domain -o $output_subfinder
 sleep 2
 sort -u $output_subfinder > tmp-subfinder && mv tmp-subfinder $output_subfinder
-
-
+echo -e "${GREEN} $output_subfinder ${RED}file created.${END}"
+sleep 3
 ## fierce
-
+echo -e "${RED} Fiercely 0 in on subdomains...${END}"
+sleep 2
 fierce --domain $domain > $output_fierce
 sleep 2
 grep $domain $output_fierce > tmp-fierce && mv tmp-fierce $output_fierce
-
+echo -e "${GREEN} $output_fierce ${RED}file created. ${END}"
+sleep 3
 ## domain parsing
-sleep 1
 echo -e "\n${RED}[!] Parsing subdomain data...${END}"
-
+sleep 2
 ## parsing Found domains
-grep "Found" test-fierce-output.txt | awk '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-1
+grep "Found" $output_fierce | awk '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-1
 
 ## parsing other domains returned (not by Found)
-grep -v "Found" test-fierce-output.txt | tr -d "{}'," | awk -F: '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-2
+grep -v "Found" $output_fierce | tr -d "{}'," | awk -F: '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-2
 sleep 1
 echo -e "${RED}[!] Done.${END}"
+sleep 2
+
+echo -e "${RED}[!] 0 in on all subdomains.${END}"
 ## compiling all target subdomains
 cat $output_sublist3r tmp-fierce-domains-1 tmp-fierce-domains-2 > tmp-all-domains.txt
 
@@ -197,14 +202,14 @@ sed -E "s/"$'\E'"\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g" tmp-all-domains.txt |
 
 ## sort unique
 sort -u tmp-all-domains-2.txt > all-domains.txt
-
+echo -e "${GREEN} all-domains.txt ${RED}file created.${END}" 
 ## clean up tmps 
 rm tmp*
-
+echo -e "${RED}[!] Done."
 
 ## nslookup
-echo -e "\n[!] Nslookup"
-
+echo -e "\n${RED}[!] 0 in on hostname resolution...${END}"
+sleep 2
 
 # NOTE: for now it only provides a file of all resolved IP address and only outputs IP addresses
 # you will need to manually cross references IP addresses to the subdomain.
@@ -228,7 +233,7 @@ echo -e "\n[!] Nslookup"
 # etc...
 echo "Network,Domain,Registrant" > tmp-csv
 
-for subdomain in $(\cat small-sample.txt); do
+for subdomain in $(\cat all-domains.txt); do
     ip=$(nslookup "$subdomain" | awk '/^Address: /{ip=$2; if(ip !~ /^192\.168\./ && ip !~ /^10\./ && ip !~ /^172\.(1[6-9]|2[0-9]|3[0-1])\./) print ip}')
 if [ -n "$ip" ]; then
     echo "$ip,$subdomain," >> tmp-csv
@@ -242,12 +247,13 @@ sleep 2
 ## storing as csv for deliverable and later ingest
 #sort -t. -n -k1,1 -k2,2 -k3,3 -k4,4 tmp-resolved-subdomain-ips.txt > resolved-subdomain-ips-only-sorted.txt
 #\cat resolved-subdomain-ips-only.txt >> tmp-csv
+echo -e "${RED}[!] Done.${END}"
+sleep 2
 
 
 ## whois
-echo -e "\n[!] Whois"
-sleep 1
-
+echo -e "${RED}[!] 0 in on who the domain belongs to...${END}"
+sleep 2
 awk -F ',' 'BEGIN {OFS = FS} NR == 1 {print $0; next} {
     cmd = "whois " $1 " | awk -F\":\" \"/Registrant|Organization/ {print \\$2}\" | tr -d \",\""
     cmd | getline output
