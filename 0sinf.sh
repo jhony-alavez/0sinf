@@ -20,7 +20,7 @@ read -p "Enter in the target domain (i.e. [www.]example.com): " domain
 sleep 1
 #### subfinder ####
 var="$(which go)"
-if [[ $var =~ "go not found"]]; then
+if [[ $var =~ "go not found" ]]; then
     echo -e "[+] go installation required. Proceeding...\n"
     sleep 1
     sudo apt-get -q update 
