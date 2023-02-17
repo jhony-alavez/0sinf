@@ -23,8 +23,8 @@ if ! command -v go &> /dev/null
 then
     echo -e "[+] go installation required. Proceeding...\n"
     sleep 1
-    sudo apt-get update 
-    sudo apt-get -y install golang
+    sudo apt-get -o DPkg::Lock::Timeout=3 update 
+    sudo apt-get -o DPkg::Lock::Timeout=3 -y install golang
     sleep 2
     export GOPATH=$HOME/go
     export PATH=$PATH:$GOPATH/bin
@@ -40,7 +40,7 @@ else
 fi
 sleep 2
 #### fierce ####
-sudo apt-get -q -y install fierce > /dev/null
+sudo apt-get -o DPkg::Lock::Timeout=3 -y install fierce
 if [ $? -ne 0 ]; then
     echo "Error: fierce installation failed."
 else
@@ -48,7 +48,7 @@ else
 fi
 sleep 2
 #### whois ####
-sudo apt-get -q -y install whois > /dev/null
+sudo apt-get -o DPkg::Lock::Timeout=3 -y install whois
 if [ $? -ne 0 ]; then
     echo "Error: whois installation failed."
 else
