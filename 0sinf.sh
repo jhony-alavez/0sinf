@@ -178,7 +178,7 @@ sleep 2
 subfinder -v -d $domain -o $output_subfinder
 sleep 2
 sort -u $output_subfinder > tmp-subfinder && mv tmp-subfinder $output_subfinder
-echo -e "${RED}[*]${GREEN} $output_subfinder ${RED}file created.${END}"
+echo -e "${YELLOW}[*]${GREEN} $output_subfinder ${RED}file created.${END}"
 sleep 3
 ## fierce
 echo -e "\n${RED} Fiercely 0 in on subdomains...${END}"
@@ -186,6 +186,8 @@ sleep 2
 fierce --domain $domain > $output_fierce
 sleep 2
 grep $domain $output_fierce > tmp-fierce && mv tmp-fierce $output_fierce
+sleep 2
+echo -e "${RED}[!]"
 echo -e "${YELLOW}[*]${GREEN} $output_fierce ${RED}file created. ${END}"
 sleep 3
 ## domain parsing
@@ -200,7 +202,7 @@ sleep 1
 echo -e "${RED}[!] Done.${END}"
 sleep 2
 
-echo -e "\n${RED}[!] 0 in on all subdomains.${END}"
+echo -e "\n${RED}0 in on all subdomains.${END}"
 ## compiling all target subdomains
 cat $output_sublist3r tmp-fierce-domains-1 tmp-fierce-domains-2 > tmp-all-domains.txt
 
@@ -209,13 +211,14 @@ sed -E "s/"$'\E'"\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g" tmp-all-domains.txt |
 
 ## sort unique
 sort -u tmp-all-domains-2.txt > all-domains.txt
-echo -e "${YELLOW}[*]${GREEN} all-domains.txt ${RED}file created.${END}" 
+ 
 ## clean up tmps 
 rm tmp*
 echo -e "${RED}[!] Done."
+echo -e "${YELLOW}[*]${GREEN} all-domains.txt ${RED}file created.${END}"
 
 ## nslookup
-echo -e "\n${RED}[!] 0 in on hostname resolution...${END}"
+echo -e "\n${RED}0 in on hostname resolution...${END}"
 sleep 2
 
 # NOTE: for now it only provides a file of all resolved IP address and only outputs IP addresses
@@ -274,6 +277,12 @@ awk -F ',' 'BEGIN {OFS = FS} NR == 1 {print $0; next} {
 
 cp tmp-whois.csv domain-$domain.csv
 
+## File and Data cleanup
+
+rm tmp-*
+
+
+echo -e "${RED}[!] Done.\n${END}"
 echo -e "${YELLOW}[*] ${GREEN}domain-$domain.csv ${RED}file created.${END}"
 
 
@@ -283,12 +292,8 @@ echo -e "${YELLOW}[*] ${GREEN}domain-$domain.csv ${RED}file created.${END}"
 ## HIBP depends on Simply Email - Skipping for now
 
 
-## File and Data cleanup
-
-rm tmp-*
 
 
-echo -e "${RED}[!] Done.\n${END}"
 
 echo -e "\n\n${RED}[*] Files ready for review: ${GREEN}"
 ls *.txt *.csv
