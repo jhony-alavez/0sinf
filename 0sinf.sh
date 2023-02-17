@@ -19,20 +19,26 @@ read -p "Enter in the target domain (i.e. [www.]example.com): " domain
 ### Check for dependencies
 sleep 1
 #### subfinder ####
-sudo apt-get -q -y install golang > /dev/null
-if [ $? -ne 0 ]; then
-    echo "Error: golang installation failed."
+var="$(which go)"
+if [[ $var =~ "go not found"]]; then
+    echo -e "[+] go installation required. Proceeding...\n"
+    sleep 1
+    sudo apt-get -q update 
+    sudo apt-get -q -y install golang > /dev/null
+    export GOROOT=/usr/local/go
+    export GOPATH=$HOME/go
+    export PATH=$PATH:$GOPATH/bin
 else
-    echo "[+] golang installed successfully."
+    echo -e "[+] go already installed."
 fi
 sleep 2
-
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-source ~/.zshrc
-
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-
+if [ $? -ne 0 ]; then
+    echo "Error: subfinder installation failed."
+else
+    echo "[+] subfinder installed successfully."
+fi
+sleep 2
 #### fierce ####
 sudo apt-get -q -y install fierce > /dev/null
 if [ $? -ne 0 ]; then
