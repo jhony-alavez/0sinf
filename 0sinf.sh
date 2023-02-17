@@ -50,6 +50,8 @@ then
     echo -e "${RED}[!] Done.${END}"
 else
     echo -e "${GREEN}[+] go already installed!${END}"
+    export GOPATH=$HOME/go
+    export PATH=$PATH:$GOPATH/bin
 fi
 sleep 2
 if ! command -v subfinder &> /dev/null
@@ -178,7 +180,7 @@ grep $domain $output_fierce > tmp-fierce && mv tmp-fierce $output_fierce
 
 ## domain parsing
 sleep 1
-echo -e "\n[!] Parsing domain data..."
+echo -e "\n${RED}[!] Parsing subdomain data...${END}"
 
 ## parsing Found domains
 grep "Found" test-fierce-output.txt | awk '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-1
@@ -186,7 +188,7 @@ grep "Found" test-fierce-output.txt | awk '{print $2}' | sed 's/\.$//g' > tmp-fi
 ## parsing other domains returned (not by Found)
 grep -v "Found" test-fierce-output.txt | tr -d "{}'," | awk -F: '{print $2}' | sed 's/\.$//g' > tmp-fierce-domains-2
 sleep 1
-## compiling all target subdomains
+echo -e "${RED}[!] Done.${END}"
 ## compiling all target subdomains
 cat $output_sublist3r tmp-fierce-domains-1 tmp-fierce-domains-2 > tmp-all-domains.txt
 
