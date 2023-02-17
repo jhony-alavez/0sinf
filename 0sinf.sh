@@ -24,15 +24,21 @@ GREY="\e[37m"
 END="\e[0m"
 
 
-output_subfinder="subfinder-$domain-output.txt"
-output_fierce="fierce-$domain-output.txt"
-output_simplymail="simplymail-$domain-output.txt"
-output_hibp="hibp-$domain-output.txt"
+
 
 ###### prompt #####
 
 read -p $'\e[31mEnter in the target domain (i.e. [www.]example.com): \e[0m' domain
 
+#####
+
+# File variables
+
+#####
+output_subfinder="subfinder-$domain-output.txt"
+output_fierce="fierce-$domain-output.txt"
+output_simplymail="simplymail-$domain-output.txt"
+output_hibp="hibp-$domain-output.txt"
 
 ### Check for dependencies
 sleep 1
@@ -281,3 +287,6 @@ rm tmp-*
 
 
 echo -e "${RED}[!] Done.\n${END}"
+
+echo -e "\n\n${RED}[*] Files read for review: "
+ls *.txt
