@@ -19,8 +19,8 @@ read -p "Enter in the target domain (i.e. [www.]example.com): " domain
 ### Check for dependencies
 sleep 1
 #### subfinder ####
-var="$(which go)"
-if [[ $var =~ "go not found" ]]; then
+if ! command -v <the_command> &> /dev/null
+then
     echo -e "[+] go installation required. Proceeding...\n"
     sleep 1
     sudo apt-get -q update 
