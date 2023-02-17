@@ -21,6 +21,7 @@
 RED="\e[31m"
 GREEN="\e[32m"
 GREY="\e[37m"
+YELLOW="\e[33m"
 END="\e[0m"
 
 
@@ -185,7 +186,7 @@ sleep 2
 fierce --domain $domain > $output_fierce
 sleep 2
 grep $domain $output_fierce > tmp-fierce && mv tmp-fierce $output_fierce
-echo -e "${RED}[*]${GREEN} $output_fierce ${RED}file created. ${END}"
+echo -e "${YELLOW}[*]${GREEN} $output_fierce ${RED}file created. ${END}"
 sleep 3
 ## domain parsing
 echo -e "\n${RED}[!] Parsing subdomain data...${END}"
@@ -208,7 +209,7 @@ sed -E "s/"$'\E'"\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g" tmp-all-domains.txt |
 
 ## sort unique
 sort -u tmp-all-domains-2.txt > all-domains.txt
-echo -e "${RED}[*]${GREEN} all-domains.txt ${RED}file created.${END}" 
+echo -e "${YELLOW}[*]${GREEN} all-domains.txt ${RED}file created.${END}" 
 ## clean up tmps 
 rm tmp*
 echo -e "${RED}[!] Done."
@@ -273,6 +274,7 @@ awk -F ',' 'BEGIN {OFS = FS} NR == 1 {print $0; next} {
 
 cp tmp-whois.csv domain-$domain.csv
 
+echo -e "${YELLOW}[*] ${GREEN}domain-$domain.csv ${RED}file created.${END}"
 
 
 ## SimplyEmail - Skipping for now - tool doesn't work.
@@ -288,5 +290,5 @@ rm tmp-*
 
 echo -e "${RED}[!] Done.\n${END}"
 
-echo -e "\n\n${RED}[*] Files read for review: "
-ls *.txt
+echo -e "\n\n${RED}[*] Files ready for review: ${GREEN}"
+ls *.txt *.csv
